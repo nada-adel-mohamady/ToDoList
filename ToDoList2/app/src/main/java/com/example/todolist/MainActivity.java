@@ -1,5 +1,6 @@
 package com.example.todolist;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -7,6 +8,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,5 +34,20 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.reminder:
+                Toast.makeText(this, "reminder selected", Toast.LENGTH_SHORT).show();
+                dialog_custom dialogCustom = new dialog_custom();
+                dialogCustom.show(getSupportFragmentManager(), "exaaaaaample");
+                return true;
+            case R.id.exit:
+            Toast.makeText(this, "exit selected", Toast.LENGTH_SHORT).show();
+            return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
+    }
 }
