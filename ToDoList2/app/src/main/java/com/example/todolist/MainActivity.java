@@ -78,7 +78,7 @@ boolean isImportant;
                 TextView title = (TextView) mView.findViewById(R.id.newReminder);
                 ConstraintLayout container = (ConstraintLayout) mView.findViewById(R.id.container);
                 title.setText("Edit Reminder");
-                multiLineText.setText("item#"+position);
+                multiLineText.setText(todoList.get(position));
                 container.setBackgroundColor(Color.rgb(0,0,255));
 
                 mBilder.setView(mView);
