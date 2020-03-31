@@ -3,10 +3,11 @@ package com.example.todolist;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,15 +27,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import static com.example.todolist.R.*;
-import static com.example.todolist.R.id.button2;
-import static com.example.todolist.R.layout.dialog_custom;
 
 
 public class MainActivity extends AppCompatActivity {
 List<String> todoList;
 ListView listView ;
 ArrayAdapter<String> ArrayAdapter;
-
+boolean isImportant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +68,40 @@ ArrayAdapter<String> ArrayAdapter;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // ------------HERE---put your logic you want to show when you click on the item ------
-                //this toast is just for test --remove it later -----------------------------------------
-                Toast.makeText(MainActivity.this, "Item #" + position, Toast.LENGTH_SHORT).show();
+                final AlertDialog.Builder mBilder = new AlertDialog.Builder(MainActivity.this);
+                final View mView = getLayoutInflater().inflate(layout.custom_dialog, null);
 
+                Button cancleBtn = (Button) mView.findViewById(R.id.cancleBtn);
+                Button commitBtn = (Button) mView.findViewById(R.id.commitBtn);
+                CheckBox important = (CheckBox) mView.findViewById(R.id.important);
+                EditText multiLineText = (EditText) mView.findViewById(R.id.editText2);
+                TextView title = (TextView) mView.findViewById(R.id.newReminder);
+                ConstraintLayout container = (ConstraintLayout) mView.findViewById(R.id.container);
+                title.setText("Edit Reminder");
+                multiLineText.setText("item#"+position);
+                container.setBackgroundColor(Color.rgb(0,0,255));
+
+                mBilder.setView(mView);
+                final AlertDialog dialogCreater = mBilder.create();
+                dialogCreater.show();
+
+                isImportant = important.isChecked();
+
+                cancleBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialogCreater.dismiss();
+                        Toast.makeText(MainActivity.this, "canceled", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                commitBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "edited", Toast.LENGTH_SHORT).show();
+                        // set new reminder
+                    }
+                });
 
             }
         });
@@ -109,7 +139,7 @@ ArrayAdapter<String> ArrayAdapter;
                 final AlertDialog dialogCreater = mBilder.create();
                 dialogCreater.show();
 
-                boolean isImportant = important.isChecked();
+                isImportant = important.isChecked();
                 //--just for testing
                 if(isImportant){
                     Toast.makeText(MainActivity.this, "checkbox checked", Toast.LENGTH_SHORT).show();
