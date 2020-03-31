@@ -8,18 +8,47 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-
+List<String> todoList;
+ListView listView ;
+ArrayAdapter<String> ArrayAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+        todoList = new ArrayList<>();
+        todoList.add("task1");
+        todoList.add("task2");
+
+        todoList.add("task3");
+        todoList.add("task3");
+        todoList.add("task3");
+        todoList.add("task3");
+        todoList.add("task3");
+        todoList.add("task3");
+        todoList.add("task3");
+        todoList.add("task3");
+        todoList.add("task3");todoList.add("task3");
+        todoList.add("task3");
+        todoList.add("task3");
+
+
+        ArrayAdapter = new ArrayAdapter<>(this, R.layout.list_view_layout,todoList);
+        listView = (ListView) findViewById(R.id.mobile_list);
+        listView.setAdapter(ArrayAdapter);
+
+
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
     }
 
 
@@ -32,21 +61,7 @@ public class MainActivity extends AppCompatActivity {
         // return true so that the menu pop up is opened
         return true;
     }
-    public boolean onOptionsItemSelected(MenuItem item ) {
-        String message = "";
-        switch(item.getItemId())
-        {
-            case R.id.reminder:
-                message = "You selected option reminder!";
-            case R.id.exit:
-                message = "You selected option exit!";;
-
-        }
-        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
 
 
-        toast.show();
-        return true;
-    }
 
 }
