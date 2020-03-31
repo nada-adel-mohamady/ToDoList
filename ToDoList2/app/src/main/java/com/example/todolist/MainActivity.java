@@ -34,13 +34,10 @@ List<String> todoList;
 ListView listView ;
 ArrayAdapter<String> ArrayAdapter;
 
-    Dialog epicDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        epicDialog = new Dialog(this);
 
         setContentView(layout.activity_main);
         Toolbar toolbar =  findViewById(id.toolbar);
@@ -87,9 +84,9 @@ ArrayAdapter<String> ArrayAdapter;
         switch (item.getItemId()){
             case id.reminder:
 
-                AlertDialog.Builder mBilder = new AlertDialog.Builder(MainActivity.this);
-                View mView = getLayoutInflater().inflate(layout.custom_dialog, null);
-                Toast.makeText(this, "reminder selected", Toast.LENGTH_SHORT).show();
+
+                final AlertDialog.Builder mBilder = new AlertDialog.Builder(MainActivity.this);
+                final View mView = getLayoutInflater().inflate(layout.custom_dialog, null);
 
                 Button cancleBtn = (Button) mView.findViewById(id.cancleBtn);
                 Button commitBtn = (Button) mView.findViewById(id.commitBtn);
@@ -97,12 +94,39 @@ ArrayAdapter<String> ArrayAdapter;
                 EditText multiLineText = (EditText) mView.findViewById(id.editText2);
 
                 mBilder.setView(mView);
-                AlertDialog dialogCreater = mBilder.create();
+                final AlertDialog dialogCreater = mBilder.create();
                 dialogCreater.show();
+
+                boolean isImportant = important.isChecked();
+                //--just for testing
+                if(isImportant){
+                    Toast.makeText(MainActivity.this, "checkbox checked", Toast.LENGTH_SHORT).show();
+                }
+
+                cancleBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialogCreater.dismiss();
+                        Toast.makeText(MainActivity.this, "canceled", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                commitBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "new reminder added", Toast.LENGTH_SHORT).show();
+                        // set new reminder
+                    }
+                });
+
                 return true;
+
             case id.exit:
-            Toast.makeText(this, "exit selected", Toast.LENGTH_SHORT).show();
-            return true;
+                Toast.makeText(this, "exit selected", Toast.LENGTH_SHORT).show();
+                finish();
+                System.exit(0);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
