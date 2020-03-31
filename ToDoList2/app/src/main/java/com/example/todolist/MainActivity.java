@@ -11,12 +11,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.view.View;
+
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -43,7 +44,7 @@ ArrayAdapter<String> ArrayAdapter;
 
         setContentView(layout.activity_main);
         Toolbar toolbar =  findViewById(id.toolbar);
-        setContentView(R.layout.activity_main);
+
         todoList = new ArrayList<>();
         todoList.add("task1");
         todoList.add("task2");
@@ -56,7 +57,7 @@ ArrayAdapter<String> ArrayAdapter;
         todoList.add("task3");
         todoList.add("task3");
         todoList.add("task3");
-        todoList.add("task3");todoList.add("task3");
+        todoList.add("task3");
         todoList.add("task3");
         todoList.add("task3");
 
@@ -66,14 +67,11 @@ ArrayAdapter<String> ArrayAdapter;
         listView.setAdapter(ArrayAdapter);
 
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
 
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,13 +82,10 @@ ArrayAdapter<String> ArrayAdapter;
         return true;
     }
 
-        //Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case id.reminder:
-
 
                 AlertDialog.Builder mBilder = new AlertDialog.Builder(MainActivity.this);
                 View mView = getLayoutInflater().inflate(layout.custom_dialog, null);
@@ -113,7 +108,7 @@ ArrayAdapter<String> ArrayAdapter;
         }
 
     }
-        //toast.show();
+
 
 
 
