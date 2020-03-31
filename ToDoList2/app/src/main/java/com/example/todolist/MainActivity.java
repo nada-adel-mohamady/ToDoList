@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -66,6 +67,17 @@ ArrayAdapter<String> ArrayAdapter;
         listView = (ListView) findViewById(R.id.mobile_list);
         listView.setAdapter(ArrayAdapter);
 
+//------------here is a click item listener ---------------
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // ------------HERE---put your logic you want to show when you click on the item ------
+                //this toast is just for test --remove it later -----------------------------------------
+                Toast.makeText(MainActivity.this, "Item #" + position, Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
 
         setSupportActionBar(toolbar);
 
