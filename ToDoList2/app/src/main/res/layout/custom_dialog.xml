@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:background="@android:color/holo_green_dark"
     android:gravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:dividerPadding="10dp"
         android:gravity="center"
         android:orientation="vertical"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,46 +23,74 @@
 
         <TextView
             android:id="@+id/newReminder"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="54dp"
+            android:layout_margin="5dp"
             android:text="New Reminder"
-            android:textSize="36sp"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/editText2"
-            android:layout_width="307dp"
-            android:layout_height="190dp"
+            android:layout_width="match_parent"
+            android:layout_height="141dp"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:autofillHints=""
+            android:background="@android:color/darker_gray"
             android:ems="10"
             android:gravity="start|top"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:padding="10dp" />
 
         <CheckBox
             android:id="@+id/important"
-            android:layout_width="331dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="CheckBox" />
+            android:layout_margin="5dp"
+            android:background="@android:color/background_dark"
+            android:paddingLeft="20dp"
+            android:text="impotrant"
+            android:textColor="#FFFFFF"
+            android:textColorLink="#E91E63"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="76dp"
+            android:layout_margin="5dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <Button
                 android:id="@+id/cancleBtn"
-                android:layout_width="154dp"
-                android:layout_height="65dp"
-                android:text="Button" />
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:layout_marginRight="70dp"
+                android:padding="15dp"
+                android:text="CANCLE"
+                android:textColor="#FFFFFF"
+                android:textColorLink="#2196F3"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/commitBtn"
-                android:layout_width="150dp"
-                android:layout_height="65dp"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
                 android:layout_marginStart="50dp"
-                android:layout_marginLeft="50dp"
-                android:text="Button" />
+                android:layout_marginLeft="70dp"
+                android:padding="15dp"
+                android:text="COMMIT"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
