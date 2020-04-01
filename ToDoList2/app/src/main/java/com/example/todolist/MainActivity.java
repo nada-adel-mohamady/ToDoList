@@ -185,6 +185,7 @@ boolean isImportant;
                     public void onClick(View view) {
                         Toast.makeText(MainActivity.this, "new reminder added", Toast.LENGTH_SHORT).show();
                         // set new reminder
+                        dialogCreater.dismiss();
                     }
                 });
 
