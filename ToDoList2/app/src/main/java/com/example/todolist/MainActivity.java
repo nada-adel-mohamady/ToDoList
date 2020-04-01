@@ -85,7 +85,7 @@ boolean isImportant;
 
                         Button cancleBtn = (Button) mView.findViewById(R.id.cancleBtn);
                         Button commitBtn = (Button) mView.findViewById(R.id.commitBtn);
-                        CheckBox important = (CheckBox) mView.findViewById(R.id.important);
+                        final CheckBox important = (CheckBox) mView.findViewById(R.id.important);
                         EditText multiLineText = (EditText) mView.findViewById(R.id.editText2);
                         TextView title = (TextView) mView.findViewById(R.id.newReminder);
                         ConstraintLayout container = (ConstraintLayout) mView.findViewById(R.id.container);
@@ -97,7 +97,6 @@ boolean isImportant;
                         final AlertDialog dialogCreater = mBilder.create();
                         dialogCreater.show();
                         dialogCreater2.dismiss();
-                        isImportant = important.isChecked();
 
                         cancleBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -110,15 +109,27 @@ boolean isImportant;
                         commitBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Toast.makeText(MainActivity.this, "edited", Toast.LENGTH_SHORT).show();
+                                if(important.isChecked()) {
+                                    Toast.makeText(MainActivity.this, "edited with important", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    Toast.makeText(MainActivity.this, "edited", Toast.LENGTH_SHORT).show();
+                                }
                                 // set new reminder
+                                dialogCreater.dismiss();
                             }
                         });
                     }
 
                 });
 
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialogCreater2.dismiss();
+                    }
 
+                    });
             }
         });
 
