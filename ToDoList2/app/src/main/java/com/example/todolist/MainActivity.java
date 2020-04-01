@@ -70,7 +70,7 @@ ArrayAdapter<String> ArrayAdapter;
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // ------------HERE---put your logic you want to show when you click on the item ------
                 //this toast is just for test --remove it later -----------------------------------------
-                Toast.makeText(MainActivity.this, "Item #" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Item #" + todoList.get(position), Toast.LENGTH_SHORT).show();
 
 
             }
