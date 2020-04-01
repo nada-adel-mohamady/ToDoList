@@ -66,42 +66,58 @@ boolean isImportant;
 //------------here is a click item listener ---------------
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 // ------------HERE---put your logic you want to show when you click on the item ------
-                final AlertDialog.Builder mBilder = new AlertDialog.Builder(MainActivity.this);
-                final View mView = getLayoutInflater().inflate(layout.custom_dialog, null);
+                final AlertDialog.Builder mBilder2 = new AlertDialog.Builder(MainActivity.this);
+                final View mView2 = getLayoutInflater().inflate(layout.choos_option, null);
+                TextView edit = (TextView) mView2.findViewById(R.id.edit);
+                TextView delete = (TextView) mView2.findViewById(R.id.delete);
 
-                Button cancleBtn = (Button) mView.findViewById(R.id.cancleBtn);
-                Button commitBtn = (Button) mView.findViewById(R.id.commitBtn);
-                CheckBox important = (CheckBox) mView.findViewById(R.id.important);
-                EditText multiLineText = (EditText) mView.findViewById(R.id.editText2);
-                TextView title = (TextView) mView.findViewById(R.id.newReminder);
-                ConstraintLayout container = (ConstraintLayout) mView.findViewById(R.id.container);
-                title.setText("Edit Reminder");
-                multiLineText.setText(todoList.get(position));
-                container.setBackgroundColor(Color.rgb(0,0,255));
+                mBilder2.setView(mView2);
+                final AlertDialog dialogCreater2 = mBilder2.create();
+                dialogCreater2.show();
 
-                mBilder.setView(mView);
-                final AlertDialog dialogCreater = mBilder.create();
-                dialogCreater.show();
-
-                isImportant = important.isChecked();
-
-                cancleBtn.setOnClickListener(new View.OnClickListener() {
+                edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialogCreater.dismiss();
-                        Toast.makeText(MainActivity.this, "canceled", Toast.LENGTH_SHORT).show();
+                        final AlertDialog.Builder mBilder = new AlertDialog.Builder(MainActivity.this);
+                        final View mView = getLayoutInflater().inflate(layout.custom_dialog, null);
+
+                        Button cancleBtn = (Button) mView.findViewById(R.id.cancleBtn);
+                        Button commitBtn = (Button) mView.findViewById(R.id.commitBtn);
+                        CheckBox important = (CheckBox) mView.findViewById(R.id.important);
+                        EditText multiLineText = (EditText) mView.findViewById(R.id.editText2);
+                        TextView title = (TextView) mView.findViewById(R.id.newReminder);
+                        ConstraintLayout container = (ConstraintLayout) mView.findViewById(R.id.container);
+                        title.setText("Edit Reminder");
+                        multiLineText.setText(todoList.get(position));
+                        container.setBackgroundColor(Color.rgb(0,0,255));
+
+                        mBilder.setView(mView);
+                        final AlertDialog dialogCreater = mBilder.create();
+                        dialogCreater.show();
+                        dialogCreater2.dismiss();
+                        isImportant = important.isChecked();
+
+                        cancleBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialogCreater.dismiss();
+                                Toast.makeText(MainActivity.this, "canceled", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        commitBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Toast.makeText(MainActivity.this, "edited", Toast.LENGTH_SHORT).show();
+                                // set new reminder
+                            }
+                        });
                     }
+
                 });
 
-                commitBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, "edited", Toast.LENGTH_SHORT).show();
-                        // set new reminder
-                    }
-                });
 
             }
         });
