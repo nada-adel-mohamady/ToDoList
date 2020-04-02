@@ -13,8 +13,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -30,10 +32,12 @@ import static com.example.todolist.R.*;
 
 
 public class MainActivity extends AppCompatActivity {
-List<String> todoList;
+ArrayList<String> todoList;
 ListView listView ;
-ArrayAdapter<String> ArrayAdapter;
+customAdpater ArrayAdapter;
 boolean isImportant;
+ArrayList<String>colors;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,23 +47,25 @@ boolean isImportant;
         Toolbar toolbar =  findViewById(id.toolbar);
 
         todoList = new ArrayList<>();
+        colors = new ArrayList<String>();
         todoList.add("task1");
+        colors.add("#248016");
         todoList.add("task2");
+        colors.add("#248016");
+        todoList.add("task3");
+        colors.add("#248016");
+        todoList.add("task3");
+        colors.add("#248016");
+        todoList.add("task3");
+        colors.add("#248016");
+        todoList.add("task3");
+        colors.add("#248016");
+        todoList.add("task3");
+        colors.add("#248016");
 
-        todoList.add("task3");
-        todoList.add("task3");
-        todoList.add("task3");
-        todoList.add("task3");
-        todoList.add("task3");
-        todoList.add("task3");
-        todoList.add("task3");
-        todoList.add("task3");
-        todoList.add("task3");
-        todoList.add("task3");
-        todoList.add("task3");
 
 
-        ArrayAdapter = new ArrayAdapter<>(this, R.layout.list_view_layout,todoList);
+        ArrayAdapter = new customAdpater(this,todoList,colors);
         listView = (ListView) findViewById(R.id.mobile_list);
         listView.setAdapter(ArrayAdapter);
 
@@ -85,12 +91,18 @@ boolean isImportant;
 
                         Button cancleBtn = (Button) mView.findViewById(R.id.cancleBtn);
                         Button commitBtn = (Button) mView.findViewById(R.id.commitBtn);
+
                         final CheckBox important = (CheckBox) mView.findViewById(R.id.important);
-                        EditText multiLineText = (EditText) mView.findViewById(R.id.editText2);
+                        final EditText multiLineText = (EditText) mView.findViewById(R.id.editText2);
                         TextView title = (TextView) mView.findViewById(R.id.newReminder);
                         ConstraintLayout container = (ConstraintLayout) mView.findViewById(R.id.container);
                         title.setText("Edit Reminder");
                         multiLineText.setText(todoList.get(position));
+                        //----- if task is important --enforce the checkbox
+                        if(colors.get(position)=="#e01616"){
+                            important.setChecked(true);
+                        }
+
                         container.setBackgroundColor(Color.rgb(0,0,255));
 
                         mBilder.setView(mView);
@@ -109,13 +121,22 @@ boolean isImportant;
                         commitBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+
+
                                 if(important.isChecked()) {
                                     Toast.makeText(MainActivity.this, "edited with important", Toast.LENGTH_SHORT).show();
+
+                                   colors.set(position,"#e01616");
+
                                 }
                                 else {
                                     Toast.makeText(MainActivity.this, "edited", Toast.LENGTH_SHORT).show();
+                                    colors.set(position,"#248016");
                                 }
                                 // set new reminder
+                                todoList.set(position,multiLineText.getText().toString());
+
+                                ArrayAdapter.notifyDataSetChanged();
                                 dialogCreater.dismiss();
                             }
                         });
@@ -159,8 +180,8 @@ boolean isImportant;
 
                 Button cancleBtn = (Button) mView.findViewById(id.cancleBtn);
                 Button commitBtn = (Button) mView.findViewById(id.commitBtn);
-                CheckBox important = (CheckBox) mView.findViewById(id.important);
-                EditText multiLineText = (EditText) mView.findViewById(id.editText2);
+                final CheckBox important = (CheckBox) mView.findViewById(id.important);
+                final EditText multiLineText = (EditText) mView.findViewById(id.editText2);
 
                 mBilder.setView(mView);
                 final AlertDialog dialogCreater = mBilder.create();
@@ -168,9 +189,14 @@ boolean isImportant;
 
                 isImportant = important.isChecked();
                 //--just for testing
-                if(isImportant){
+                if(important.isChecked()){
+
                     Toast.makeText(MainActivity.this, "checkbox checked", Toast.LENGTH_SHORT).show();
+
+
+
                 }
+
 
                 cancleBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -185,6 +211,15 @@ boolean isImportant;
                     public void onClick(View view) {
                         Toast.makeText(MainActivity.this, "new reminder added", Toast.LENGTH_SHORT).show();
                         // set new reminder
+                        String rem = multiLineText.getText().toString();
+                        todoList.add(rem);
+                        if(important.isChecked()){
+                            colors.add("#e01616");
+                        }
+                        else{
+                            colors.add("#248016");
+                        }
+                        ArrayAdapter.notifyDataSetChanged();
                         dialogCreater.dismiss();
                     }
                 });
