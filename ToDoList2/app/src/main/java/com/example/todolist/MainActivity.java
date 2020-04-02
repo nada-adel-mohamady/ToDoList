@@ -148,6 +148,9 @@ ArrayList<String>colors;
                     @Override
                     public void onClick(View view) {
                         dialogCreater2.dismiss();
+                        todoList.remove(position);
+                        colors.remove(position);
+                        ArrayAdapter.notifyDataSetChanged();
                     }
 
                     });
