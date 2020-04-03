@@ -5,11 +5,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.app.AlertDialog;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Button;
@@ -121,6 +124,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+            listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+                @Override
+                public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) { }
+
+                @Override
+                public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                    MenuInflater inflater = mode.getMenuInflater();
+                    inflater.inflate(R.menu.delete_multi_select_menu, menu);
+                    return true;
+                }
+
+                @Override
+                public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                    return false;
+                }
+
+                @Override
+                public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.delete_multi_reminders:
+                            for (int count = mCursorAdapter.getCount() - 1; count >= 0; count--) {
+                                if (listView.isItemChecked(count)) {
+                                    mDbAdapter.deleteReminderById((int)mCursorAdapter.getItemId(count));
+                                }
+                            }
+                            mode.finish();
+                            mCursorAdapter.changeCursor(mDbAdapter.fetchAllReminders());
+                            return true;
+                    }
+                    return false;
+                }
+                @Override
+                public void onDestroyActionMode(ActionMode mode) { }
+            });
+        }
         setSupportActionBar(toolbar);
     }
 
