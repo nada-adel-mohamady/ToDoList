@@ -1,12 +1,7 @@
 package com.example.todolist;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -15,15 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -34,12 +22,7 @@ import static com.example.todolist.R.*;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static final String KEY_TEST = "test";
-    ArrayList<String> todoList;
     ListView listView ;
-    customAdpater ArrayAdapter;
-    boolean isImportant;
-    ArrayList<String>colors;
     RemindersDbAdapter mDbAdapter;
     RemindersSimpleCursorAdapter mCursorAdapter;
 
@@ -62,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         int[] to = new int[]{R.id.test};
 
         mCursorAdapter = new RemindersSimpleCursorAdapter(MainActivity.this,layout.list_view_layout,cursor,from,to,0);
-        //listView.setAdapter(ArrayAdapter);
         listView.setAdapter(mCursorAdapter);
 
 //------------here is a click item listener ---------------
@@ -153,6 +135,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case id.clear:
+                Toast.makeText(this, "clear all....", Toast.LENGTH_SHORT).show();
+                mDbAdapter.deleteAllReminders();
+                mCursorAdapter.changeCursor(mDbAdapter.fetchAllReminders());
+                return true;
             case id.reminder:
 
 
