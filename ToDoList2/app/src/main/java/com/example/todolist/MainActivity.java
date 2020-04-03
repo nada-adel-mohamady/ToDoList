@@ -1,12 +1,14 @@
 package com.example.todolist;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,11 +34,14 @@ import static com.example.todolist.R.*;
 
 
 public class MainActivity extends AppCompatActivity {
-ArrayList<String> todoList;
-ListView listView ;
-customAdpater ArrayAdapter;
-boolean isImportant;
-ArrayList<String>colors;
+    private static final String KEY_TEST = "test";
+    ArrayList<String> todoList;
+    ListView listView ;
+    customAdpater ArrayAdapter;
+    boolean isImportant;
+    ArrayList<String>colors;
+    RemindersDbAdapter mDbAdapter;
+    RemindersSimpleCursorAdapter mCursorAdapter;
 
 
     @Override
@@ -46,34 +51,24 @@ ArrayList<String>colors;
         setContentView(layout.activity_main);
         Toolbar toolbar =  findViewById(id.toolbar);
 
-        todoList = new ArrayList<>();
-        colors = new ArrayList<String>();
-        todoList.add("task1");
-        colors.add("#248016");
-        todoList.add("task2");
-        colors.add("#248016");
-        todoList.add("task3");
-        colors.add("#248016");
-        todoList.add("task3");
-        colors.add("#248016");
-        todoList.add("task3");
-        colors.add("#248016");
-        todoList.add("task3");
-        colors.add("#248016");
-        todoList.add("task3");
-        colors.add("#248016");
-
-
-
-        ArrayAdapter = new customAdpater(this,todoList,colors);
         listView = (ListView) findViewById(R.id.mobile_list);
-        listView.setAdapter(ArrayAdapter);
+        listView.setDivider(null);
+        mDbAdapter = new RemindersDbAdapter(this);
+        mDbAdapter.open();
+
+        Cursor cursor = mDbAdapter.fetchAllReminders();
+
+        final String[] from = new String[]{RemindersDbAdapter.COL_CONTENT};
+        int[] to = new int[]{R.id.test};
+
+        mCursorAdapter = new RemindersSimpleCursorAdapter(MainActivity.this,layout.list_view_layout,cursor,from,to,0);
+        //listView.setAdapter(ArrayAdapter);
+        listView.setAdapter(mCursorAdapter);
 
 //------------here is a click item listener ---------------
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                // ------------HERE---put your logic you want to show when you click on the item ------
                 final AlertDialog.Builder mBilder2 = new AlertDialog.Builder(MainActivity.this);
                 final View mView2 = getLayoutInflater().inflate(layout.choos_option, null);
                 TextView edit = (TextView) mView2.findViewById(R.id.edit);
@@ -82,10 +77,12 @@ ArrayList<String>colors;
                 mBilder2.setView(mView2);
                 final AlertDialog dialogCreater2 = mBilder2.create();
                 dialogCreater2.show();
-
+///////////---------------------------------  EDIT  ---------------------------------------------------------
                 edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        int reminderId = (int)mCursorAdapter.getItemId(position);
+                        final Reminder reminder = mDbAdapter.fetchReminderById(reminderId);
                         final AlertDialog.Builder mBilder = new AlertDialog.Builder(MainActivity.this);
                         final View mView = getLayoutInflater().inflate(layout.custom_dialog, null);
 
@@ -97,13 +94,10 @@ ArrayList<String>colors;
                         TextView title = (TextView) mView.findViewById(R.id.newReminder);
                         ConstraintLayout container = (ConstraintLayout) mView.findViewById(R.id.container);
                         title.setText("Edit Reminder");
-                        multiLineText.setText(todoList.get(position));
-                        //----- if task is important --enforce the checkbox
-                        if(colors.get(position)=="#e01616"){
-                            important.setChecked(true);
-                        }
 
-                        container.setBackgroundColor(Color.rgb(0,0,255));
+                        important.setChecked(reminder.getImportant() == 1);
+                        multiLineText.setText(reminder.getContent());
+                        container.setBackgroundColor(Color.argb(225,225,240,141));
 
                         mBilder.setView(mView);
                         final AlertDialog dialogCreater = mBilder.create();
@@ -121,22 +115,11 @@ ArrayList<String>colors;
                         commitBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-
-
-                                if(important.isChecked()) {
-                                    Toast.makeText(MainActivity.this, "edited with important", Toast.LENGTH_SHORT).show();
-
-                                   colors.set(position,"#e01616");
-
-                                }
-                                else {
-                                    Toast.makeText(MainActivity.this, "edited", Toast.LENGTH_SHORT).show();
-                                    colors.set(position,"#248016");
-                                }
-                                // set new reminder
-                                todoList.set(position,multiLineText.getText().toString());
-
-                                ArrayAdapter.notifyDataSetChanged();
+                                Reminder editedReminder = new Reminder(reminder.getId(),multiLineText.getText().toString(), important.isChecked() ? 1 : 0);
+                                //mDbAdapter.updateReminder(currentId,multiLineText.getText().toString(), important.isChecked());
+                                mDbAdapter.updateReminder(editedReminder);
+                                mCursorAdapter.changeCursor(mDbAdapter.fetchAllReminders());
+                                Toast.makeText(MainActivity.this, "Edited", Toast.LENGTH_SHORT).show();
                                 dialogCreater.dismiss();
                             }
                         });
@@ -147,10 +130,9 @@ ArrayList<String>colors;
                 delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        mDbAdapter.deleteReminderById((int)mCursorAdapter.getItemId(position));
+                        mCursorAdapter.changeCursor(mDbAdapter.fetchAllReminders());
                         dialogCreater2.dismiss();
-                        todoList.remove(position);
-                        colors.remove(position);
-                        ArrayAdapter.notifyDataSetChanged();
                     }
 
                     });
@@ -158,16 +140,12 @@ ArrayList<String>colors;
         });
 
         setSupportActionBar(toolbar);
-
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.more_tab_menu, menu);
-
         // return true so that the menu pop up is opened
         return true;
     }
@@ -190,17 +168,6 @@ ArrayList<String>colors;
                 final AlertDialog dialogCreater = mBilder.create();
                 dialogCreater.show();
 
-                isImportant = important.isChecked();
-                //--just for testing
-                if(important.isChecked()){
-
-                    Toast.makeText(MainActivity.this, "checkbox checked", Toast.LENGTH_SHORT).show();
-
-
-
-                }
-
-
                 cancleBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -212,25 +179,18 @@ ArrayList<String>colors;
                 commitBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, "new reminder added", Toast.LENGTH_SHORT).show();
-                        // set new reminder
-                        String rem = multiLineText.getText().toString();
-                        todoList.add(rem);
-                        if(important.isChecked()){
-                            colors.add("#e01616");
-                        }
-                        else{
-                            colors.add("#248016");
-                        }
-                        ArrayAdapter.notifyDataSetChanged();
+                        mDbAdapter.createReminder(multiLineText.getText().toString(), important.isChecked());
+                        mCursorAdapter.changeCursor(mDbAdapter.fetchAllReminders());
+                        Toast.makeText(MainActivity.this, "added new reminder", Toast.LENGTH_SHORT).show();
                         dialogCreater.dismiss();
+
                     }
                 });
 
                 return true;
 
             case id.exit:
-                Toast.makeText(this, "exit selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "exiting....", Toast.LENGTH_SHORT).show();
                 finish();
                 System.exit(0);
                 return true;
@@ -238,12 +198,7 @@ ArrayList<String>colors;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
-
-
-
-
-    }
+}
 
 

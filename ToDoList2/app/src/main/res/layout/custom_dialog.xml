@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
-    android:background="@android:color/holo_green_dark"
+    android:background="#83E6FF"
     android:gravity="center">
 
     <LinearLayout
@@ -24,34 +24,35 @@
 
         <TextView
             android:id="@+id/newReminder"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="54dp"
             android:layout_margin="5dp"
             android:text="New Reminder"
-            android:textColor="#FFFFFF"
+            android:textColor="#FF0057"
             android:textSize="30sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/editText2"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="141dp"
             android:layout_margin="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:autofillHints=""
-            android:background="@android:color/darker_gray"
+            android:background="#D3D3D3"
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:textColor="#630022" />
 
         <CheckBox
             android:id="@+id/important"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="5dp"
-            android:background="@color/colorAccent"
+            android:background="#D287F8"
             android:bufferType="spannable"
             android:buttonTint="#FF0000"
             android:paddingLeft="20dp"
@@ -71,10 +72,12 @@
 
             <Button
                 android:id="@+id/cancleBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="55dp"
                 android:layout_margin="5dp"
                 android:layout_marginRight="70dp"
+                android:layout_weight="50"
+                android:background="#FF8585"
                 android:padding="15dp"
                 android:text="CANCLE"
                 android:textColor="#FFFFFF"
@@ -84,11 +87,13 @@
 
             <Button
                 android:id="@+id/commitBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="55dp"
                 android:layout_margin="5dp"
                 android:layout_marginStart="50dp"
                 android:layout_marginLeft="70dp"
+                android:layout_weight="50"
+                android:background="#FF8585"
                 android:padding="15dp"
                 android:text="COMMIT"
                 android:textColor="#FFFFFF"
