@@ -35,8 +35,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(layout.activity_main);
-        Toolbar toolbar =  findViewById(id.toolbar);
-
+        final Toolbar toolbar =  findViewById(id.toolbar);
+        //create delete button for multi delete items
+        final Button multiDelete = findViewById(id.multi_delete);
+        // hide it
+        multiDelete.setVisibility(View.GONE);
         listView = (ListView) findViewById(R.id.mobile_list);
         listView.setDivider(null);
         mDbAdapter = new RemindersDbAdapter(this);
@@ -134,7 +137,10 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                     MenuInflater inflater = mode.getMenuInflater();
+
                     inflater.inflate(R.menu.delete_multi_select_menu, menu);
+                    multiDelete.setVisibility(View.VISIBLE);
+
                     return true;
                 }
 
@@ -159,10 +165,15 @@ public class MainActivity extends AppCompatActivity {
                     return false;
                 }
                 @Override
-                public void onDestroyActionMode(ActionMode mode) { }
+                public void onDestroyActionMode(ActionMode mode) {
+                    toolbar.setVisibility(View.VISIBLE);
+                    multiDelete.setVisibility(View.GONE);
+                }
             });
         }
+
         setSupportActionBar(toolbar);
+
     }
 
     @Override

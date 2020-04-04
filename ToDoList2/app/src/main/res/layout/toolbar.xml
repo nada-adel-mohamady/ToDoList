@@ -11,4 +11,12 @@
     app:navigationIcon="@android:drawable/ic_popup_reminder"
     >
 
+    <Button
+        android:id="@+id/multi_delete"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="100dp"
+        android:background="@drawable/button_bg_round"
+        android:drawableLeft="@android:drawable/ic_menu_delete"
+        android:paddingLeft="9dp"/>
 </androidx.appcompat.widget.Toolbar>
